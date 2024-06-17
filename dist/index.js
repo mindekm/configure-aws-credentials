@@ -17,9 +17,10 @@ const USER_AGENT = 'configure-aws-credentials-for-github-actions';
 class CredentialsClient {
     constructor(props) {
         this.region = props.region;
-        if (props.proxyServer) {
-            (0, core_1.info)('Configuring proxy handler for STS client');
-            const handler = new https_proxy_agent_1.HttpsProxyAgent(props.proxyServer);
+        const proxyServer = process.env['HTTP_PROXY'] || process.env['http_proxy'];
+        if (proxyServer) {
+            (0, core_1.info)(`Configuring proxy handler for STS client: ${proxyServer}`);
+            const handler = new https_proxy_agent_1.HttpsProxyAgent(proxyServer);
             this.requestHandler = new node_http_handler_1.NodeHttpHandler({
                 httpAgent: handler,
                 httpsAgent: handler,
@@ -437,7 +438,6 @@ async function run() {
         const roleSessionName = core.getInput('role-session-name', { required: false }) || ROLE_SESSION_NAME;
         const roleSkipSessionTaggingInput = core.getInput('role-skip-session-tagging', { required: false }) || 'false';
         const roleSkipSessionTagging = roleSkipSessionTaggingInput.toLowerCase() === 'true';
-        const proxyServer = core.getInput('http-proxy', { required: false });
         const inlineSessionPolicy = core.getInput('inline-session-policy', { required: false });
         const managedSessionPoliciesInput = core.getMultilineInput('managed-session-policies', { required: false });
         const managedSessionPolicies = [];
@@ -493,7 +493,7 @@ async function run() {
         }
         (0, helpers_1.exportRegion)(region);
         // Instantiate credentials client
-        const credentialsClient = new CredentialsClient_1.CredentialsClient({ region, proxyServer });
+        const credentialsClient = new CredentialsClient_1.CredentialsClient({ region });
         let sourceAccountId;
         let webIdentityToken;
         // If OIDC is being used, generate token

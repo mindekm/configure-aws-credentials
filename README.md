@@ -103,7 +103,6 @@ See [action.yml](./action.yml) for more detail.
 | aws-session-token         | AWS session token to use. Used in uncommon authentication scenarios.                              |    No    |
 | role-chaining             | Use existing credentials from the environment to assume a new role.                               |    No    |
 | audience                  | The JWT audience when using OIDC. Used in non-default AWS partitions, like China regions.         |    No    |
-| http-proxy                | An HTTP proxy to use for API calls.                                                               |    No    |
 | mask-aws-account-id       | AWS account IDs are not considered secret. Setting this will hide account IDs from output anyway. |    No    |
 | role-duration-seconds     | The assumed role duration in seconds, if assuming a role. Defaults to 1 hour.                     |    No    |
 | role-external-id          | The external ID of the role to assume. Only needed if your role requires it.                      |    No    |
@@ -445,19 +444,7 @@ web identity.
 
 ### Proxy Configuration
 
-If need use a HTTP proxy you can set it in the action manually.
-
-Additionally this action will always consider the `HTTP_PROXY` environment
-variable.
-
-Manually configured proxy:
-```yaml
-uses: aws-actions/configure-aws-credentials@v4
-with:
-  aws-region: us-east-2
-  role-to-assume: my-github-actions-role
-  http-proxy: "http://companydomain.com:3128"
-```
+This action will always consider the `HTTP_PROXY` environment variable.
 
 Proxy configured in the environment variable:
 ```bash

@@ -34,9 +34,6 @@ inputs:
     description: The audience to use for the OIDC provider
     required: false
     default: sts.amazonaws.com
-  http-proxy:
-    description: Proxy to use for the AWS SDK agent
-    required: false
   mask-aws-account-id:
     description: Whether to mask the AWS account ID for these credentials as a secret value. By default the account ID will not be masked
     required: false
